@@ -11,11 +11,11 @@ const client = new Client({
 
 const resetId = (table) => {
   client.connect();
-  client.query(`SELECT setval('${table}_id_seq', (SELECT MAX(id) FROM ${table}))`,
+  client.query(`SELECT setval('${table}_id_seq', (SELECT MAX(id) FROM ${table}), false)`,
   (err, res) => {
     if(err){
       console.error(err);
-    } else {console.log(res.rows[0])};
+    } else {res.rows[0]};
     client.end();
   });
 }
