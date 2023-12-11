@@ -9,15 +9,11 @@ const client = new Client({
   port: process.env.DB_PORT
 })
 
-const resetId = (table) => {
-  client.connect();
-  client.query(`SELECT setval('${table}_id_seq', (SELECT MAX(id) FROM ${table}), false)`,
-  (err, res) => {
-    if(err){
-      console.error(err);
-    } else {res.rows[0]};
-    client.end();
-  });
+const resetId = async (table) => {
+  await client.connect();
+  const res = await client.query(`SELECT setval('${table}_id_seq', (SELECT MAX(id) FROM ${table}))`);
+  console.log(res.rows[0]);
+  client.end();
 }
 
 
